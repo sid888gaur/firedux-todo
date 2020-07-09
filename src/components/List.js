@@ -91,7 +91,7 @@ class List extends Component{
 const mapStateToProps = ({data}) => {
     return{
         data
-    };
+    }
 }
 
 export default connect(mapStateToProps, actions)(List);
