@@ -1,4 +1,9 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import _ from 'lodash';
+import * as actions from '../actions';
+import ListItem from './ListItem';
+import "./style.css";
 
 class List extends Component{
     state = {
@@ -39,6 +44,25 @@ class List extends Component{
         }
     };
 
+    renderToDo(){
+        const {data} = this.props;
+        const toDos = _.map(data, (value,key) => {
+            return <ListItem key={key} todoId={key} todo={value} />;
+        });
+        if(!_.isEmpty(toDos)){
+            return toDos;
+        }
+        return(
+            <div className="col s10 offset-s1 center-allign">
+                <h4>Nothing ToDo!</h4>
+            </div>
+        );
+    };
+
+    componentWillMount(){
+        this.props.fetchToDos();
+    };
+
     render(){
         const {showForm} = this.state;
         return(
@@ -47,7 +71,27 @@ class List extends Component{
                     {this.renderForm()}
                     {this.renderToDo()}
                 </div>
+                <div className="fixed-action-btn">
+                    <button 
+                        onClick={() => this.setState({showForm: !showForm})}
+                        className="btn-floating btn-large black darken-4"
+                    >
+                        {showForm ? (
+                            <i className="large material-icon">-</i>
+                        ) : (
+                            <i className="large material-icon">+</i>
+                        )}
+                    </button>
+                </div>
             </div>
         );
     }
 }
+
+const mapStateToProps = ({data}) => {
+    return{
+        data
+    };
+}
+
+export default connect(mapStateToProps, actions)(List);
