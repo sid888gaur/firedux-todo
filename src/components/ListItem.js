@@ -16,7 +16,7 @@ class ListItem extends Component{
                     {todo.title}
                     <span
                         onClick={() => this.completeClick(todoId)}
-                        className="complete-todo-item waves-effect waves-light blue lighten-5 blue-text text-darken-4 btn"
+                        className="complete-todo-item waves-effect waves-light blue lighten-5 black-text text-darken-4 btn"
                     >
                         <i className="large material-icons">Done!</i>
                     </span>

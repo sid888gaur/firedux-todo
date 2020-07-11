@@ -72,7 +72,7 @@ class List extends Component{
                     {this.renderToDo()}
                 </div>
                 <div className="fixed-action-btn">
-                    <button 
+                    <button
                         onClick={() => this.setState({showForm: !showForm})}
                         className="btn-floating btn-large black darken-4"
                     >

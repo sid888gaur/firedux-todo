@@ -5,7 +5,7 @@
   .to-do-list-item {
     margin-top: 10px;
     color: white;
-    transition: background-color 1s;
+    transition: background-color 0.5s;
   }
   
   .to-do-list-item h4 {
@@ -14,7 +14,7 @@
   }
   
   .to-do-list-item:hover {
-    background-color: dodgerblue !important;
+    background-color: rgb(184, 12, 12) !important;
   }
   
   .complete-todo-item {
