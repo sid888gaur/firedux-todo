@@ -1,4 +1,9 @@
 
+.title h2{
+  color: white;
+  background-color: dodgerblue !important;
+}
+
 .to-do-list-container {
     margin-top: 25px;
   }

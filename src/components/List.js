@@ -8,23 +8,22 @@ import "./style.css";
 class List extends Component{
     state = {
         showForm: false,
-        formValue: ""
+        formValue: "",
+        dueDate: ""
     };
 
-    inputChange = event => {
-        this.setState({formValue: event.target.value});
-    };
 
     formSubmit = event => {
-        const {formValue} = this.state;
+        const {formValue} = this.state.formValue;
+        const {dueDate} = this.state.dueDate;
         const {addToDo} = this.props;
         event.preventDefault();
-        addToDo({title:formValue});
-        this.setState({formValue: ""});
+        addToDo({title:formValue}, {title:dueDate});
+        this.setState({formValue: "", dueDate: ""});
     };
 
-    renderForm = () => {
-        const {showForm,formValue} = this.state;
+    renderForm = (event) => {
+        const {showForm,formValue,dueDate} = this.state;
         if(showForm){
             return(
                 <div id="todo-add-form" className="col s10 offset-s1">
@@ -32,11 +31,17 @@ class List extends Component{
                         <div className="input-field">
                             <input 
                                 value={formValue}
-                                onChange={this.inputChange}
+                                onChange={this.setState({formValue: event.target.value})}
                                 id="todoNext"
                                 type="text"
                             />
                             <label htmlFor="todoNext">What Next?</label>
+                            <input 
+                                value={dueDate}
+                                type="date-time-local"
+                                placeholder="mm/dd/yyyy hh:mm:ss"
+                                onChange={this.setState({dueDate: event.target.value})}
+                            />
                         </div>
                     </form>
                 </div>
@@ -46,14 +51,14 @@ class List extends Component{
 
     renderToDo(){
         const {data} = this.props;
-        const toDos = _.map(data, (value,key) => {
-            return <ListItem key={key} todoId={key} todo={value} />;
+        const toDos = _.map(data, (value,reminder,key) => {
+            return <ListItem key={key} todoId={key} todo={value,reminder} />;
         });
         if(!_.isEmpty(toDos)){
             return toDos;
         }
         return(
-            <div className="col s10 offset-s1 center-allign">
+            <div className="col s10 offset-s1 center-align">
                 <h4>Nothing ToDo!</h4>
             </div>
         );
@@ -64,33 +69,39 @@ class List extends Component{
     };
 
     render(){
-        const {showForm} = this.state;
+        const {showForm} = this.state.showForm;
         return(
-            <div className="to-do-list-container">
-                <div className="row">
-                    {this.renderForm()}
-                    {this.renderToDo()}
+            <div className="App">
+                <div className="title center-align" >
+                    <h2>ToDo App</h2>
                 </div>
-                <div className="fixed-action-btn">
-                    <button
-                        onClick={() => this.setState({showForm: !showForm})}
-                        className="btn-floating btn-large black darken-4"
-                    >
-                        {showForm ? (
-                            <i className="large material-icon">-</i>
-                        ) : (
-                            <i className="large material-icon">+</i>
-                        )}
-                    </button>
+                <div className="to-do-list-container">
+                    <div className="row">
+                        {this.renderForm(this.state)}
+                        {this.renderToDo()}
+                    </div>
+                    <div className="fixed-action-btn">
+                        <button
+                            onClick={() => this.setState({showForm: !showForm})}
+                            className="btn-floating btn-large black darken-4"
+                        >
+                            {showForm ? (
+                                <i className="large material-icon">-</i>
+                            ) : (
+                                <i className="large material-icon">+</i>
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
         );
     }
 }
 
-const mapStateToProps = ({data}) => {
+const mapStateToProps = ({formValue, dueDate}) => {
     return{
-        data
+        formValue,
+        dueDate
     }
 }
 
